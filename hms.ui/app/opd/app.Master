@@ -1,0 +1,1250 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="app.master.cs" Inherits="hms.ui.app.opd.app" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="../../assets/images/logo/Untitled.png" type="image/x-icon" />
+    <link href="../../assets/css/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="../../assets/css/sb-admin-2.css" rel="stylesheet" />
+    <script src="../../assets/js/jquery-3.2.1.min.js"></script>
+    <script src="../../assets/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="../../signalr/hubs"></script>
+    <link href="../../assets/js/jquery-ui.xcss" rel="stylesheet" />
+    <script src="../../assets/js/jquery-ui.min.js"></script>
+    <link href="../../assets/css/snackbar.css" rel="stylesheet" />
+    <script src="../../assets/js/chart.min.js"></script>
+    <link href="../../assets/icons/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../assets/css/sidebarscroller.css" rel="stylesheet" />
+
+    <script src="js/push.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body>
+    <audio id="bellSound">
+        <source src="../../assets/sound/bell.mp3" type="audio/mpeg" />
+    </audio>
+    <div id="snackbar">
+        <img class="mr-2" src="../../assets/icons/feather/bell.svg" />
+        You have new notification from the user please check it!
+    </div>
+    <div id="generalSnackbar">
+    </div>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID='ScriptManager1' runat='server' EnablePageMethods='true' />
+        <div>
+            <body id="page-top">
+                <div id="wrapper">
+                    <div id="attr" runat="server">
+                        <ul class="navbar-nav  sidebar text-white toggled sidebar-dark bg-dark accordion h-100" style="border-radius: 0px 25px 25px 0px" id="accordionSidebar" translate="no">
+                            <li class="nav-item dropdown" style="margin-left: -2px; margin-top: 1px">
+                                <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                                    <div class="sidebar-brand-icon">
+                                        <center>
+                                            <img src="../../assets/icons/dashbordicon/layers.svg" />
+                                        </center>
+                                    </div>
+                                </a>
+                            </li>
+                            <br />
+                            <br />
+                            <br />
+                            <li class="nav-item dropdown mb-1" id="dashboard3" runat="server" style="margin-left: -14px">
+                                <a class="nav-link  " href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Dashboard">
+                                    <span class="bi bi-speedometer2" style="font-size:17px;font-weight:bold"></span>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown mb-1" id="Li2" runat="server" style="margin-left: -14px">
+                                <a class="nav-link" href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Appointment">
+                                    <span class="bi bi-clock" style="font-size: 17px; font-weight: bold"></span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item dropdown mb-1" id="Lii" runat="server" style="margin-left: -14px">
+                                <a class="nav-link " href="patients.aspx" data-toggle="tooltip" data-placement="right" title="  Patients">
+                                    <span class="bi bi-person-check" style="font-size: 17px; font-weight: bold"></span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item dropdown" id="Li5" runat="server" style="margin-left: -14px">
+                                <a class="nav-link " href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Discussion Pannel">
+                                    <span class="bi bi-chat" style="font-size: 17px; font-weight: bold"></span>
+                                </a>
+                            </li>
+                            <div class="text-center d-none d-md-inline">
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <li class="nav-item dropdown mb-2" id="Li4" runat="server" style="margin-left: -14px">
+                                <a class="nav-link" href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Dashboard">
+                                    <span class="bi bi-gear" style="font-size: 20px; font-weight: bold"></span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="content-wrapper" class="d-flex flex-column" style="position: relative">
+                        <div id="content" style="position: relative">
+                            <nav class="navbar navbar-expand  bg-white topbar w-100 mb-2 static-top" translate="no">
+                                <button id="sidebarToggleTop" runat="server" clientidmode="Static" type="button" class="btn btn-link d-md-none rounded-circle mr-3">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <div class="nav-item dropdown no-arrow mx-1">
+                                            </div>
+
+                                            <div class="nav-item dropdown no-arrow w-100" id="Div1" runat="server" data-toggle="tooltip" title="Reports">
+                                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown3" role="button"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="bi bi-shield-check text-gray-500 " data-toggle="tooltip" title="Date Range"></span>
+                                                    <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Date Range">OPD</span>
+                                                    <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1"
+                                                        id="fullName" runat="server" data-toggle="tooltip" title="Date Range" clientidmode="Static"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="input-group w-25" style="display: none">
+                                    <span id="sub" runat="server"></span>
+                                    <div id="myDIV" class="spinner-grow spinner-grow-sm text-warning mr-4 mt-2" role="status">
+                                        <span class="sr-only">Loading.ffrfyyrg..</span>
+                                    </div>
+                                </div>
+                                <asp:Panel ID="LoginPanel" class="mr-3" Width="700px" runat="server" DefaultButton="btnSearch">
+                                    <div class="input-group" id="test" runat="server">
+                                    </div>
+                                    <div class="input-group">
+                                        <asp:TextBox ID="txtSearch" Visible="true" ClientIDMode="Static" Style="border-radius: 20px 0px 0px 20px;" class=" form-control form-control-sm" Width="210px" type="search" aria-label="Search" runat="server" placeholder="Search patients" aria-describedby="search-addon">
+
+                                        </asp:TextBox>
+
+                                        <asp:LinkButton ID="btnSearch" Visible="true" runat="server" Style="border-radius: 0px 20px 20px 0px; border-left-color: white; border-right-color: #adb5bd; border-top-color: #adb5bd; border-bottom-color: #adb5bd" class="btn btn-white btn-sm " Text="Search" OnClientClick="myFunction()" CausesValidation="false"><span class="fas fa-search"></span></asp:LinkButton>
+                                        <script>
+                                            $('#searchOption').change(function () {
+                                                $('#txtSearch').attr('placeholder', 'Search ' + $("#searchOption option:selected").text());
+                                            });
+                                        </script>
+                                    </div>
+                                </asp:Panel>
+                                <ul class="navbar-nav ml-auto" style="position: relative">
+
+                                    <div class="nav-item dropdown no-arrow mx-1 " id="Div3" runat="server">
+                                        <div id="status"></div>
+                                    </div>
+                                    <li class="nav-item dropdown no-arrow mx-1 mr-1" id="Li1" runat="server">
+                                        <a class="nav-link dropdown-toggle text-gray-900" href="#" id="createTab" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="bi bi-ui-radios-grid" style="font-size: 15px"></span>
+                                            <%-- <span id="Span1" runat="server" class=" badge-counter badge-pill badge badge-danger ">∙</span> --%>
+                                        </a>
+                                        <!-- Dropdown - User Information -->
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="createTab" style="width: 230px">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DiseaseListModal" onclick="GetDiseaseData()">
+                                                <i class="bi bi-ui-radios-grid fa-sm fa-fw mr-2 text-gray-500"></i>
+                                               Disease Catelog
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DiseaseTypeListModal" onclick="GetDiseaseTypeData()">
+                                                <i class="bi bi-ui-radios-grid fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Disease Type Catelog
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DiseaseStatusListModal" onclick="GetDiseaseStatusData()">
+                                                <i class="bi bi-ui-radios-grid fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Disease Status Catelog
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DiseaseTreatmentListModal" onclick="GetDiseaseTreatmentData()">
+                                                <i class="bi bi-ui-radios-grid fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Treatment Type Catelog
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#MedicineListModal" onclick="GetMedicineData()">
+                                                <i class="bi bi-ui-radios-grid fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Medicine Catelog
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown no-arrow mx-1 mr-1" id="Li3" runat="server" data-toggle="tooltip" data-placement="right" title="Monitor Status">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown3" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="../../assets/icons/dashbordicon/monitor.svg" />
+                                            <%-- <span id="Span1" runat="server" class=" badge-counter badge-pill badge badge-danger ">∙</span> --%>
+                                        </a>
+                                        <!-- Dropdown - User Information -->
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="userDropdown3" style="width: 200px">
+
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#managePosModal">
+                                                <i class="bi bi-broadcast fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                OPD status
+                                            </a>
+
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#AppointmentListModal">
+                                                <i class="bi bi-clock fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Appointment
+                                            </a>
+
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#AutomationModal">
+                                                <i class="bi bi-alexa fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Automation
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" onclick="GetAutomatedReport() " data-target="#ReportAutomationListModal">
+                                                <i class="bi bi-pie-chart fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Report Automation
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" onclick="GetReminder() " data-target="#ReminderAutomationListModal">
+                                                <i class="bi bi-alarm fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Reminder
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#FollowUpListModal" onclick="GetFollowUpData()">
+                                                <i class="bi bi-file-earmark-check fa-sm fa-fw mr-2 text-gray-500"></i>
+                                                Patient Follow Up
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown no-arrow ">
+                                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="bi bi-app text-gray-800" style="font-size: 18px"></span>
+                                            <!-- Counter - Alerts -->
+                                            <span id="counter" class=" badge-counter badge-pill badge badge-danger ">∙</span>
+                                        </a>
+                                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="alertsDropdown">
+                                            <h6 class="dropdown-header">Notification
+                                            </h6>
+                                            <br />
+                                            <div id="tbl" class="scrollarea" style="max-height: 600px; max-width: 600px; overflow-y: scroll;zoom:85%">
+                                                <center>
+                                                    <main role="main" id="main">
+
+                                                        <div class="starter-template">
+                                                            <center>
+                                                                <p class="lead">
+                                                                    <i class="bi bi-bell-slash text-gray-300  fa-2x"></i>
+                                                                </p>
+                                                                <h6 class="text-gray-700 small">No Notification</h6>
+                                                            </center>
+                                                        </div>
+                                                    </main>
+                                                </center>
+                                            </div>
+                                            <center>
+                                                <a class="dropdown-item text-center small text-danger" visible="false" id="unread_tab" runat="server" href="marknotifasread.aspx?markas=true">Mark as Read</a>
+                                                <a class="dropdown-item text-center small " id="delete_tab" visible="false" runat="server" href="marknotifasread.aspx?r=true"><span class="fas fa-trash mr-2 text-gray-300"></span><span class="text-primary">Delete All Notification</span></a>
+                                            </center>
+                                        </div>
+                                    </li>
+                                    <div class="topbar-divider d-none d-sm-block"></div>
+                                    <li class="nav-item dropdown no-arrow">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <div id="profilediv" runat="server">
+                                                <img src="../../assets/images/profile/62681-flat-icons-face-computer-design-avatar-icon.jpg.jpg" width="35" height="35" class="rounded-circle" />
+                                            </div>
+                                        </a>
+                                        <!-- Dropdown - User Information -->
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
+                                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                Profile
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                Logout
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <script type="text/javascript">
+
+                                //$(function () {
+                                //    // Declare a proxy to reference the hub.
+                                //    var chat = $.connection.chatHub;
+                                //    // Create a function that the hub can call to broadcast messages.
+                                //    chat.client.broadcastMessage = function (name, message) {
+                                //        // Html encode display name and message.
+                                //        var encodedName = $('<div />').text(name).html();
+                                //        var encodedMsg = $('<div />').text(message).html();
+                                //        // Add the message to the page.
+                                //        $('#discussion').append('<li><strong>' + encodedName
+                                //            + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
+                                //    };
+                                //    // Get the user name and store it to prepend to messages.
+                                //    $('#displayname').val(prompt('Enter your name:', ''));
+                                //    // Set initial focus to message input box.
+                                //    $('#message').focus();
+                                //    // Start the connection.
+                                //    $.connection.hub.start().done(function () {
+                                //        $('#sendmessage').click(function () {
+                                //            // Call the Send method on the hub.
+                                //            chat.server.send($('#displayname').val(), $('#message').val());
+                                //            // Clear text box and reset focus for next comment.
+                                //            $('#message').val('').focus();
+                                //        });
+                                //    });
+                                //});
+                            </script>
+                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </div>
+                        <footer class="sticky-footer bg-light">
+                            <div class="container my-auto">
+                                <div class="copyright text-center text-gray-400 my-auto">
+                                    <span>Copyright &copy; 2021-2025 Qemer POS</span>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+
+                    <a class="scroll-to-top rounded" href="#page-top">
+                        <i class="fas fa-angle-up"></i>
+                    </a>
+                    <div class="modal fade" id="AutomationModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-gear mr-2" style="color: #c34dc1; font-size: 18px"></span>
+                                        Automation Settings</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll;zoom:90%">
+                                    <div class="row">
+                                        <div class="col-12">
+
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="bi bi-alexa" style="color: #c34dc1;" data-toggle="tooltip" title="Notes"></span>
+                                                            <span class="small text-gray-500 font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Notes">Automation</span>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="custom-control mr-2 custom-checkbox custom-control-inline">
+                                                                <input type="checkbox" id="automation" checked name="customRadioInline2" class="custom-control-input" runat="server" clientidmode="Static" />
+                                                                <label class="custom-control-label text-gray-700 small " for="automation">Enable</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="bi bi-clock" style="color: #c34dc1;" data-toggle="tooltip" title="Notes"></span>
+                                                            <span class="small text-gray-500 font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Enable Appointment Automation">Appointment</span>
+
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="custom-control mr-2 custom-checkbox custom-control-inline" style="margin-left: 19px">
+                                                                <input type="checkbox" id="appointment" checked name="customRadioInline2" class="custom-control-input" runat="server" clientidmode="Static" />
+                                                                <label class="custom-control-label text-gray-700 small " for="appointment">Enable</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="bi bi-pie-chart" style="color: #c34dc1;" data-toggle="tooltip" title="Notes"></span>
+                                                            <span class="small text-gray-500 font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Enable Report Automation">Enable Report</span>
+
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="custom-control mr-2 custom-checkbox custom-control-inline" style="margin-left: 30px">
+                                                                <input type="checkbox" id="report" checked name="customRadioInline2" class="custom-control-input" runat="server" clientidmode="Static" />
+                                                                <label class="custom-control-label text-gray-700 small " for="report">Enable</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="bi bi-alarm" style="color: #c34dc1;" data-toggle="tooltip" title="Notes"></span>
+                                                            <span class="small text-gray-500  font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Enable Reminder Automation">Enable Reminder</span>
+
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="custom-control mr-2 custom-checkbox custom-control-inline" style="margin-left: 25px">
+                                                                <input type="checkbox" id="reminder" checked name="customRadioInline2" class="custom-control-input" runat="server" clientidmode="Static" />
+                                                                <label class="custom-control-label text-gray-700 small " for="reminder">Enable</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="border-bottom">
+                                                        <td>
+                                                            <span class="bi bi-envelope-check" style="color: #c34dc1;" data-toggle="tooltip" title="Notes"></span>
+                                                            <span class="small text-gray-500 font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Enable Email Automation">Enable Email</span>
+
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="custom-control mr-2 custom-checkbox custom-control-inline" style="margin-left: 35px">
+                                                                <input type="checkbox" id="email" checked name="customRadioInline2" class="custom-control-input" runat="server" clientidmode="Static" />
+                                                                <label class="custom-control-label text-gray-700 small " for="email">Enable</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="ReportAutomationModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-pie-chart mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Report Automation</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="bi mb-2 bi-patch-check text-gray-500 " data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small mb-2 text-gray-500 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Report Type</span>
+                                            <asp:DropDownList ID="ddlReportType" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                                <asp:ListItem>Activity</asp:ListItem>
+
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 mb-2 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Recipient Address</span>
+                                            <asp:TextBox ID="txtReportRecipientEmail" placeholder="example@gmail.com" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                            </asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 mb-2 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Report Cycle</span>
+                                            <asp:DropDownList ID="ddlReportCycle" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                                <asp:ListItem>Daily</asp:ListItem>
+                                                <asp:ListItem>Weekly</asp:ListItem>
+                                                <asp:ListItem>Mothly</asp:ListItem>
+                                                <asp:ListItem>Quarterly</asp:ListItem>
+                                                <asp:ListItem>Double Quarterly</asp:ListItem>
+                                                <asp:ListItem>Yearly</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 mb-2 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">From Date</span>
+                                            <asp:TextBox ID="txtFromDate" TextMode="Date" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                            </asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 text-uppercase mb-2 font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Notes</span>
+                                            <asp:TextBox  ID="txtReportNotes" placeholder="Notes" TextMode="MultiLine" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                            </asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveReportAutomation()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-save2 mr-1"></span>Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="ReportAutomationListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-pie-chart mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Report Automation List  <a href="#" data-toggle="modal" data-target="#ReportAutomationModal" onclick="ShowAddAutomation() ">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm table-bordered " style="zoom: 85%;" id="reportAutomationTable">
+                                            </table>
+                                            <main role="main" id="reportStatusDiv" style="display:none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Automation Created</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style=" background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AppointmentListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-clock mr-2" style="color: #c34dc1; font-size: 22px"></span>
+                                        Apointments</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2" style="zoom: 70%">
+                                            <asp:Repeater ID="rptrAppointment" runat="server">
+                                                <HeaderTemplate>
+                                                    <table class="table align-items-center table-hover table-sm " id="patientTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" class="text-gray-500  font-weight-light   text-uppercase ">Reg No</th>
+                                                                <th scope="col" class="text-gray-500  font-weight-light   text-uppercase ">Diag No</th>
+                                                                <th scope="col" class="text-gray-500  font-weight-light   text-uppercase ">Date</th>
+                                                                <th scope="col" class="text-gray-500 font-weight-light   text-uppercase ">Due Date </th>
+                                                                <th scope="col" class="text-gray-500 font-weight-light   text-uppercase ">Status</th>
+                                                                <th scope="col" class="text-gray-500 text-right font-weight-light  text-uppercase ">Notes</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <tr onclick="GetRowIndex(this)">
+                                                        <td class="text-primary">
+                                                            <%# Eval("RegNo")%>
+                                                        </td>
+                                                        <td class="text-gray-500">
+                                                            <%# Eval("DiagNo")%>
+                                                        </td>
+                                                        <td class="text-gray-900 text-left">
+                                                            <span class="bi bi-calendar text-gray-300 " data-toggle="tooltip" title="Type"></span>
+                                                            <span class="small text-gray-500 font-weight-light badge badge-light mr-1">
+                                                                <%# Eval("Date", "{0: dd MMM yyyy}")%>
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-gray-900">
+                                                            <%# Eval("DueDate", "{0: dd MMM yyyy}")%>
+                                                        </td>
+                                                        <td class="text-gray-900">
+                                                            <%# Eval("Status")%>
+                                                        </td>
+                                                        <td class="text-gray-900 text-right">
+                                                            <%# Eval("Notes")%>
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                    </tbody>
+                                              </table>
+                                                </FooterTemplate>
+                                            </asp:Repeater>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="ReminderAutomationModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-alarm mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Reminder Automation</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 mb-2 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Reminder Name</span>
+                                            <asp:TextBox ID="txtReminderName" placeholder="eg. Patient Check Up" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                            </asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-6">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 mb-2 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Report Cycle</span>
+                                            <asp:DropDownList ID="ddlReminderCycle" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                                <asp:ListItem>Daily</asp:ListItem>
+                                                <asp:ListItem>Weekly</asp:ListItem>
+                                                <asp:ListItem>Mothly</asp:ListItem>
+                                                <asp:ListItem>Quarterly</asp:ListItem>
+                                                <asp:ListItem>Double Quarterly</asp:ListItem>
+                                                <asp:ListItem>Yearly</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="bi bi-patch-check text-gray-500 mb-2" data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 text-uppercase mb-2 font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Disease Name">Tasks</span>
+                                            <asp:TextBox ID="txtTask" placeholder="Notes" TextMode="MultiLine" runat="server" class="form-control form-control-sm 
+                                                rounded-left rounded-right">
+                                            </asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveReminder()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-save2 mr-1"></span>Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="ReminderAutomationListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-alarm mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Reminder List  <a href="#" data-toggle="modal" data-target="#ReminderAutomationModal" onclick="ShowAddReminder() ">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm table-bordered " style="zoom: 85%;" id="reminderAutomationTable">
+                                            </table>
+                                            <main role="main" id="reminderStatusDiv" style="display: normal">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Reminder Created</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AddDiseaseModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-plus-lg mr-2" style="color: #c34dc1; font-size: 22px"></span>
+                                        Add Disease</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+                                    <div class="row mb-2 ">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-patch-check text-gray-500 " data-toggle="tooltip" title="Medicine Name"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Disease Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <asp:TextBox ID="txtDiseaseName" placeholder="Disease Name"
+                                                ClientIDMode="Static" class="form-control form-control-sm 
+                                rounded-left rounded-right"
+                                                runat="server"></asp:TextBox>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Dose and Notes"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Severity</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <asp:DropDownList ID="ddlDiseaseSeverity" CssClass="form-control form-control-sm" runat="server">
+                                                <asp:ListItem>Low</asp:ListItem>
+                                                <asp:ListItem>Medium</asp:ListItem>
+                                                <asp:ListItem>High</asp:ListItem>
+                                                <asp:ListItem>Severe</asp:ListItem>
+                                            </asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveDisease()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-plus mr-1"></span>Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="DiseaseListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-ui-radios-grid mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Disease List  <a href="#" data-toggle="modal" data-target="#AddDiseaseModal" onclick="ShowAddDiseaseModal() ">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm" style="zoom: 85%;" id="diseaseTable">
+                                            </table>
+                                            <main role="main" id="diseaseStatusDiv" style="display: none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Disease Added</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AddDiseaseStatusModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-plus-lg mr-2" style="color: #c34dc1; font-size: 22px"></span>
+                                        Add Disease Status</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+ 
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Dose and Notes"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Disease Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <asp:DropDownList ID="ddlDiseaseStatusName" CssClass="form-control form-control-sm" runat="server">
+                                            </asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 ">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-patch-check text-gray-500 " data-toggle="tooltip" title="Medicine Name"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Status</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <asp:TextBox ID="txtDiseaseStatus" placeholder="Disease Status eg. BP Raised"
+                                                ClientIDMode="Static" class="form-control form-control-sm 
+                                rounded-left rounded-right"
+                                                runat="server"></asp:TextBox>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm btn-secondary text-white" type="button"
+                                        onclick="$('#AddDiseaseStatusModal').modal('hide')" style="border-radius: 7px;">
+                                        <span class="bi bi-dash-circle mr-1"></span>Done
+                                    </button>
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveDiseaseStatus()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-plus mr-1"></span>Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="DiseaseStatusListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-ui-radios-grid mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Disease Status List  <a href="#" data-toggle="modal" data-target="#AddDiseaseStatusModal" onclick="ShowAddDiseaseStatusModal() ">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm" style="zoom: 85%;" id="diseaseStatusTable">
+                                            </table>
+                                            <main role="main" id="diseaseStatusStatusDiv" style="display: none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Disease Added</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AddDiseaseTreatmentTypeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-plus-lg mr-2" style="color: #c34dc1; font-size: 22px"></span>
+                                        Add Disease TT</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Dose and Notes"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Disease Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <asp:DropDownList ID="ddlDiseaseNameTreatmentType" CssClass="form-control form-control-sm" runat="server">
+                                            </asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 ">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-patch-check text-gray-500 " data-toggle="tooltip" title="eg. Healthy life style counciling  (HLC)  only"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Treatment Type</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <asp:TextBox ID="txtTreatmentType" placeholder="eg. Healthy life style counciling  (HLC)  only"
+                                                ClientIDMode="Static" class="form-control form-control-sm 
+                                     rounded-left rounded-right"
+                                                runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm btn-secondary text-white" type="button"
+                                        onclick="$('#AddDiseaseStatusModal').modal('hide')" style="border-radius: 7px;">
+                                        <span class="bi bi-dash-circle mr-1"></span>Done
+                                    </button>
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveDiseaseTreatmentType()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-plus mr-1"></span>Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="DiseaseTreatmentListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-ui-radios-grid mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Disease Treatment List  <a href="#" data-toggle="modal" data-target="#AddDiseaseTreatmentTypeModal" onclick="$('#DiseaseTreatmentListModal').modal('hide')">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm" style="zoom: 85%;" id="diseaseTreatmentTable">
+                                            </table>
+                                            <main role="main" id="diseaseTreatmentStatusDiv" style="display: none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Disease Treatment Added</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AddMedicineModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-plus-lg mr-2" style="color: #c34dc1; font-size: 22px"></span>
+                                        Add Medicine</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Dose and Notes"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Medicine Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <asp:TextBox ID="txtAddMedicineName" placeholder="eg. Diclofance"
+                                                ClientIDMode="Static" class="form-control form-control-sm 
+                                     rounded-left rounded-right"
+                                                runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Dose and Notes"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Medicine Type</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <asp:DropDownList ID="ddlMedicineType" CssClass="form-control form-control-sm" runat="server">
+                                                <asp:ListItem>Anti-Biotics</asp:ListItem>
+                                            </asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 ">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-exclamation-circle text-gray-500 " data-toggle="tooltip" title="eg. Healthy life style counciling  (HLC)  only"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Precautiion</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <asp:TextBox ID="txtPrecaution" placeholder="eg. Allergy"
+                                                ClientIDMode="Static" class="form-control form-control-sm 
+                                     rounded-left rounded-right"
+                                                runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveMedicine()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-plus mr-1"></span>Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="MedicineListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-ui-radios-grid mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Medicine List  <a href="#" data-toggle="modal" data-target="#AddMedicineModal" onclick="$('#MedicineListModal').modal('hide')">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm" style="zoom: 85%;" id="medicineTable">
+                                            </table>
+                                            <main role="main" id="medicineStatusDiv" style="display: none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Medicine Added</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AddDiseaseTypeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-plus-lg mr-2" style="color: #c34dc1; font-size: 22px"></span>
+                                        Add Disease Type</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Disease Name"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Disease Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <asp:DropDownList ID="ddlDiseaseTypeName" CssClass="form-control form-control-sm" runat="server">
+                                            </asp:DropDownList>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 border-bottom">
+                                        <div class="col-12 mb-2">
+                                            <span class="bi bi-check-circle text-gray-500 " data-toggle="tooltip" title="Disease Type"></span>
+                                            <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1">Disease Type</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <asp:TextBox ID="txtDiseaseType" placeholder="eg. Hipetitus A, B"
+                                                ClientIDMode="Static" class="form-control form-control-sm 
+                                     rounded-left rounded-right"
+                                                runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm btn-secondary text-white" type="button"
+                                        onclick="$('#AddDiseaseTypeModal').modal('hide')" style="border-radius: 7px;">
+                                        <span class="bi bi-dash-circle mr-1"></span>Done
+                                    </button>
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="SaveDiseaseType()" style="border-radius: 7px; background-color: #ba99d4">
+                                        <span class="bi bi-plus mr-1"></span>Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="DiseaseTypeListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-ui-radios-grid mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Disease Type List  <a href="#" data-toggle="modal" data-target="#AddDiseaseTypeModal" onclick="$('#DiseaseTypeListModal').modal('hide')">
+                                            <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Automation"></span>
+                                        </a></h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-sm" style="zoom: 85%;" id="diseaseTypeTable">
+                                            </table>
+                                            <main role="main" id="diseaseTypeStatusDiv" style="display: none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Disease Type Added</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="modal fade" id="FollowUpListModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content" style="border-radius: 18px">
+                                <div class="modal-header">
+                                    <h6 class="modal-title font-weight-bold text-gray-900">
+                                        <span class="bi bi-file-earmark-check mr-2" style="color: #c34dc1; font-size: 20px"></span>
+                                        Follow Up List </h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="max-height: 500px; overflow-y: scroll; zoom: 90%">
+
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <table class="table table-responsive table-hover table-bordered table-sm" style="zoom: 85%;" id="myTable">
+                                      
+
+                                            </table>
+                                            <main role="main" id="followUpStatusDiv" style="display: none">
+
+                                                <div class="starter-template">
+                                                    <center>
+                                                        <p class="lead">
+                                                            <i class="bi bi-exclamation-circle text-gray-300  fa-3x"></i>
+                                                        </p>
+                                                        <h6 class="text-gray-700 small">No Follow Up Added</h6>
+                                                    </center>
+                                                </div>
+                                            </main>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn  btn-sm text-white" type="button"
+                                        onclick="CreateMedicineSchedule()" style="background-color: #ba99d4">
+                                        <span class="bi bi-x mr-1"></span>Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </div>
+    </form>
+</body>
+<script src="js/master-table.js"></script>
+<script src="js/master.js"></script>
+<script src="../../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/jquery.easing.min.js"></script>
+<script src="../../assets/js/sb-admin-2.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#mytoast").toast({
+            delay: 10000
+        });
+    })
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    })
+</script>
+<script src="../../assets/js/tooltip.js"></script>
+
+</html>

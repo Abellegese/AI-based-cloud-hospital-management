@@ -1,0 +1,367 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="app.master.cs" Inherits="hms.ui.app.card.app" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="../../assets/images/logo/Untitled.png" type="image/x-icon" />
+    <link href="../../assets/css/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="../../assets/css/sb-admin-2.css" rel="stylesheet" />
+    <script src="../../assets/js/jquery-3.2.1.min.js"></script>
+    <script src="../../assets/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="../../signalr/hubs"></script>
+    <link href="../../assets/js/jquery-ui.xcss" rel="stylesheet" />
+    <script src="../../assets/js/jquery-ui.min.js"></script>
+    <link href="../../assets/css/snackbar.css" rel="stylesheet" />
+    <script src="../../assets/js/chart.min.js"></script>
+    <link href="../../assets/icons/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../assets/css/sidebarscroller.css" rel="stylesheet" />
+
+
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body>
+    <audio id="bellSound">
+        <source src="../../notification-1-126509.mp3" type="audio/mpeg">
+    </audio>
+    <div id="snackbar">
+        <img class="mr-2" src="../../assets/icons/feather/bell.svg" />
+        Yohave new notification from the user please check it!
+    </div>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID='ScriptManager1' runat='server' EnablePageMethods='true' />
+        <div>
+            <body id="page-top">
+                <div id="wrapper">
+                    <div id="attr" runat="server">
+                        <ul class="navbar-nav  sidebar text-white toggled sidebar-dark bg-primary accordion h-100" style="border-radius: 0px 25px 25px 0px" id="accordionSidebar" translate="no">
+                            <li class="nav-item dropdown" style="margin-left: -2px; margin-top: 1px">
+                                <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                                    <div class="sidebar-brand-icon">
+                                        <center>
+                                            <img src="../../assets/icons/dashbordicon/layers.svg" />
+                                        </center>
+                                    </div>
+                                </a>
+                            </li>
+                            <br />
+                            <br />
+                            <br />
+                            <li class="nav-item dropdown mb-2" id="dashboard3" runat="server" style="margin-left: -14px">
+                                <a class="nav-link  " href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Dashboard">
+                                    <img src="../../assets/icons/dashbordicon/home.svg" />
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown mb-2" id="Li2" runat="server" style="margin-left: -14px">
+                                <a class="nav-link" href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Appointment">
+                                    <img src="../../assets/icons/dashbordicon/clock.svg" />
+                                </a>
+                            </li>
+
+                            <li class="nav-item dropdown mb-2" id="Lii" runat="server" style="margin-left: -14px">
+                                <a class="nav-link " href="patients.aspx" data-toggle="tooltip" data-placement="right" title="  Patients">
+                                    <img src="../../assets/icons/dashbordicon/user.svg" />
+                                </a>
+                            </li>
+
+                            <li class="nav-item dropdown" id="Li5" runat="server" style="margin-left: -14px">
+                                <a class="nav-link " href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Discussion Pannel">
+                                    <img src="../../assets/icons/dashbordicon/message-square.svg" />
+                                </a>
+                            </li>
+                            <div class="text-center d-none d-md-inline">
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <li class="nav-item dropdown mb-2" id="Li4" runat="server" style="margin-left: -14px">
+                                <a class="nav-link" href="dashboard.aspx" data-toggle="tooltip" data-placement="right" title="  Dashboard">
+                                    <img src="../../assets/icons/dashbordicon/settings.svg" />
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="content-wrapper" class="d-flex flex-column" style="position: relative">
+                        <div id="content" style="position: relative">
+                            <nav class="navbar navbar-expand  bg-white topbar w-100 mb-2 static-top" translate="no">
+                                <button id="sidebarToggleTop" runat="server" clientidmode="Static" type="button" class="btn btn-link d-md-none rounded-circle mr-3">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <div class="nav-item dropdown no-arrow mx-1">
+                                            </div>
+                                            <div class="nav-item dropdown no-arrow w-100" id="Li1" runat="server" data-toggle="tooltip" title="Reports">
+                                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown3" role="button"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <img src="../../assets/icons/feather/table.svg" />
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-left w-100 shadow animated--grow-in"
+                                                    aria-labelledby="userDropdown3">
+                                                    <a class="dropdown-item" href="salesreport.aspx">
+                                                        <i class="fas fa-flag-checkered fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                        Sales
+                                                    </a>
+                                                    <a class="dropdown-item" href="purchasereport.aspx">
+                                                        <i class="fas fa-flag-checkered fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                        Purchase
+                                                    </a>
+                                                    <a class="dropdown-item" href="inventory.aspx">
+                                                        <i class="fas fa-flag-checkered fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                        Inventory
+                                                    </a>
+                                                    <a class="dropdown-item" href="creditreport.aspx">
+                                                        <i class="fas fa-flag-checkered fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                        Credit
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                            <div class="nav-item dropdown no-arrow w-100" id="Div1" runat="server" data-toggle="tooltip" title="Reports">
+                                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown3" role="button"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="bi bi-shield-check text-gray-500 " data-toggle="tooltip" title="Date Range"></span>
+                                                    <span class="small text-gray-500 text-uppercase font-weight-light badge badge-light mr-1" data-toggle="tooltip" title="Date Range">CARD room</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="input-group w-25" style="display: none">
+                                    <span id="sub" runat="server"></span>
+                                    <div id="myDIV" class="spinner-grow spinner-grow-sm text-warning mr-4 mt-2" role="status">
+                                        <span class="sr-only">Loading.ffrfyyrg..</span>
+                                    </div>
+                                </div>
+                                <asp:Panel ID="LoginPanel" class="mr-3" Width="700px" runat="server" DefaultButton="btnSearch">
+                                    <div class="input-group" id="test" runat="server">
+                                    </div>
+                                    <div class="input-group">
+                                        <asp:TextBox ID="txtSearch1" Visible="true" ClientIDMode="Static" Style="border-radius: 20px 0px 0px 20px;" class=" form-control form-control-sm" Width="210px" type="search"  runat="server" placeholder="Search patients">
+
+                                        </asp:TextBox>
+
+                                        <asp:LinkButton ID="btnSearch" Visible="true" runat="server" Style="border-radius: 0px 20px 20px 0px; border-left-color: white; border-right-color: #adb5bd; border-top-color: #adb5bd; border-bottom-color: #adb5bd" class="btn btn-white btn-sm " Text="Search" OnClientClick="myFunction()" CausesValidation="false"><span class="fas fa-search"></span></asp:LinkButton>
+                                        <script>
+                                            $('#searchOption').change(function () {
+                                                $('#txtSearch').attr('placeholder', 'Search ' + $("#searchOption option:selected").text());
+                                            });
+                                        </script>
+                                    </div>
+                                </asp:Panel>
+                                <ul class="navbar-nav ml-auto" style="position: relative">
+
+                                    <div class="nav-item dropdown no-arrow mx-1 " id="Div3" runat="server">
+                                        <div id="status"></div>
+                                    </div>
+                                    <li class="nav-item dropdown no-arrow mx-1 mr-2" id="Li3" runat="server"
+                                        data-toggle="tooltip" data-placement="right" title="Monitor Activities">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown3" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="../../assets/icons/dashbordicon/monitor.svg" />
+                                            <%-- <span id="Span1" runat="server" class=" badge-counter badge-pill badge badge-danger ">∙</span> --%>
+                                        </a>
+                                        <!-- Dropdown - User Information -->
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="userDropdown3" style="width: 250px">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#OPDModal">
+                                                <i class="bi bi-broadcast fa-fw mr-2 text-gray-500"></i>
+                                                OPD status
+                                            </a>
+                                           
+                                        </div>
+                                    </li>
+
+                                    <li class="nav-item dropdown no-arrow ">
+                                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="bi bi-app" style="font-size: 20px"></span>
+                                            <!-- Counter - Alerts -->
+                                            <span id="counter" class=" badge-counter badge-pill badge badge-danger ">∙</span>
+                                        </a>
+                                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="alertsDropdown">
+                                            <h6 class="dropdown-header">Notification
+                                            </h6>
+                                            <br />
+                                            <div id="tbl" class="scrollarea" style="max-height: 500px; max-width: 600px; overflow-y: scroll">
+                                                <center>
+                                                    <main role="main" id="main">
+
+                                                        <div class="starter-template">
+                                                            <center>
+                                                                <p class="lead">
+                                                                    <i class="fas fa-bell-slash text-gray-300  fa-2x"></i>
+                                                                </p>
+                                                                <h6 class="text-gray-700 small font-italic">No Notification</h6>
+                                                            </center>
+                                                        </div>
+                                                    </main>
+                                                </center>
+                                            </div>
+                                            <center>
+                                                <a class="dropdown-item text-center small text-danger" visible="false" id="unread_tab" runat="server" href="marknotifasread.aspx?markas=true">Mark as Read</a>
+                                                <a class="dropdown-item text-center small " id="delete_tab" visible="false" runat="server" href="marknotifasread.aspx?r=true"><span class="fas fa-trash mr-2 text-gray-300"></span><span class="text-primary">Delete All Notification</span></a>
+                                            </center>
+                                        </div>
+                                    </li>
+                                    <div class="topbar-divider d-none d-sm-block"></div>
+                                    <li class="nav-item dropdown no-arrow">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <div id="profilediv" runat="server">
+                                                <img src="../../assets/images/profile/62681-flat-icons-face-computer-design-avatar-icon.jpg.jpg" width="35" height="35" class="rounded-circle" />
+                                            </div>
+
+                                        </a>
+                                        <!-- Dropdown - User Information -->
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                            aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
+                                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                Profile
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                Logout
+                                            </a>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </nav>
+                            <script type="text/javascript">
+
+                                //$(function () {
+                                //    // Declare a proxy to reference the hub.
+                                //    var chat = $.connection.chatHub;
+                                //    // Create a function that the hub can call to broadcast messages.
+                                //    chat.client.broadcastMessage = function (name, message) {
+                                //        // Html encode display name and message.
+                                //        var encodedName = $('<div />').text(name).html();
+                                //        var encodedMsg = $('<div />').text(message).html();
+                                //        // Add the message to the page.
+                                //        $('#discussion').append('<li><strong>' + encodedName
+                                //            + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
+                                //    };
+                                //    // Get the user name and store it to prepend to messages.
+                                //    $('#displayname').val(prompt('Enter your name:', ''));
+                                //    // Set initial focus to message input box.
+                                //    $('#message').focus();
+                                //    // Start the connection.
+                                //    $.connection.hub.start().done(function () {
+                                //        $('#sendmessage').click(function () {
+                                //            // Call the Send method on the hub.
+                                //            chat.server.send($('#displayname').val(), $('#message').val());
+                                //            // Clear text box and reset focus for next comment.
+                                //            $('#message').val('').focus();
+                                //        });
+                                //    });
+                                //});
+                            </script>
+                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </div>
+                        <footer class="sticky-footer bg-light">
+                            <div class="container my-auto">
+                                <div class="copyright text-center text-gray-400 my-auto">
+                                    <span>Copyright &copy; 2021-2025 Qemer POS</span>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
+                <div class="modal fade" id="OPDModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content" style="border-radius: 18px">
+                            <div class="modal-header">
+                                <h6 class="modal-title font-weight-bold text-gray-900">
+                                    <span class="bi bi-broadcast-pin mr-2" style="color: #c34dc1; font-size: 18px"></span>
+                                    OPD Status 
+                            <a href="#" data-toggle="modal" data-target="#AddOPDModal">
+                                <span class="bi bi-plus text-gray-500 mx-2" data-toggle="tooltip" title="Add Rooms"></span>
+                            </a>
+                                </h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+                                <div class="row">
+                                    <div class="col-md-12 small">
+                                        <table class="table align-items-center table-hover table-sm " id="requestTable">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="AddOPDModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="CreditModalG" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content" style="border-radius: 18px">
+                            <div class="modal-header">
+                                <h6 class="modal-title font-weight-bold text-gray-900">
+                                    <span class="bi bi-plus-circle mr-2" style="color: #c34dc1; font-size: 18px"></span>
+                                    Add OPD (Rooms) </h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="max-height: 500px; overflow-y: scroll">
+                                <div class="row mb-1">
+                                    <div class="col-12">
+                                        <asp:TextBox ID="txtOpdName" placeholder="Room Name" class="form-control form-control-sm rounded-left rounded-right" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <asp:Button ID="Button1" OnClick="Button1_Click" runat="server" Text="Button" />
+                                <asp:LinkButton ID="btnCreateOpd" class="btn btn-sm mx-2 mr-2 btn-primary" Style="border-radius: 14px" runat="server" OnClick="btnCreateOpd_Click">
+                            <span class="bi bi-save mr-2"></span>Save
+                                </asp:LinkButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        
+        
+    </form>
+</body>
+<script src="../../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/jquery.easing.min.js"></script>
+<script src="../../assets/js/sb-admin-2.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#mytoast").toast({
+            delay: 10000
+        });
+    })
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    })
+</script>
+<script src="../../assets/js/tooltip.js"></script>
+
+</html>
+
